@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altitude Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #0366d6;
+            text-align: center;
+        }
+        .calculator {
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #d1d5da;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e6ffed;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 18px;
+            min-height: 20px;
+        }
+        .formula {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #586069;
+            border-top: 1px solid #e1e4e8;
+            padding-top: 15px;
+        }
+        .loading {
+            color: #586069;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Altitude Calculator</h1>
+    
+    <div class="calculator">
+        <div class="input-group">
+            <label for="seaLevelPressure">Sea Level Pressure (hPa)</label>
+            <input type="number" id="seaLevelPressure" value="1013.25" step="0.01">
+        </div>
+        
+        <div class="input-group">
+            <label for="currentPressure">Current Pressure (hPa)</label>
+            <input type="number" id="currentPressure" step="0.01">
+        </div>
+        
+        <div class="input-group">
+            <label for="temperature">Temperature (°C, optional)</label>
+            <input type="number" id="temperature" step="0.1" placeholder="15 (default)">
+        </div>
+        
+        <div id="result" class="result">
+            <span class="loading">Enter pressure values to calculate altitude</span>
+        </div>
+    </div>
+    
+    <div class="formula">
+        <p>This calculator uses the barometric formula:</p>
+        <p>Altitude = ( (P₀/P)<sup>1/5.257</sup> - 1 ) × (T + 273.15) / 0.0065</p>
+        <p>Where:<br>
+        P₀ = Sea level pressure (hPa)<br>
+        P = Current pressure (hPa)<br>
+        T = Temperature (°C)</p>
+    </div>
+    
+    <script>
+        // Get all input elements
+        const inputs = document.querySelectorAll('input');
+        
+        // Add event listeners to all inputs
+        inputs.forEach(input => {
+            input.addEventListener('input', calculateAltitude);
+        });
+        
+        function calculateAltitude() {
+            // Get input values
+            const seaLevelPressure = parseFloat(document.getElementById('seaLevelPressure').value);
+            const currentPressure = parseFloat(document.getElementById('currentPressure').value);
+            let temperature = document.getElementById('temperature').value;
+            
+            // Check if we have both pressure values
+            if (isNaN(seaLevelPressure)) {
+                updateResult("Enter sea level pressure");
+                return;
+            }
+            
+            if (isNaN(currentPressure)) {
+                updateResult("Enter current pressure");
+                return;
+            }
+            
+            // Validate pressure values
+            if (currentPressure <= 0) {
+                updateResult("Current pressure must be positive");
+                return;
+            }
+            
+            // Use default temperature if not provided
+            temperature = temperature === '' ? 15 : parseFloat(temperature);
+            
+            // Calculate altitude using barometric formula
+            const altitude = ((Math.pow(seaLevelPressure / currentPressure, 1/5.257) - 1) * (temperature + 273.15)) / 0.0065;
+            
+            // Update result
+            updateResult(`Estimated Altitude: ${altitude.toFixed(2)} meters (${(altitude * 3.28084).toFixed(2)} feet)`);
+        }
+        
+        function updateResult(message) {
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = message;
+        }
+    </script>
+</body>
+</html>
