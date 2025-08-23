@@ -1,205 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Altitude Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        h1 {
-            color: #0366d6;
-            text-align: center;
-        }
-        .calculator {
-            background-color: #f6f8fa;
-            border-radius: 6px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #d1d5da;
-            border-radius: 3px;
-            box-sizing: border-box;
-        }
-        button {
-            padding: 10px 15px;
-            background-color: #0366d6;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            margin: 10px auto;
-            display: block;
-        }
-        button:hover {
-            background-color: #024ea2;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #cce5ff;
-            border-radius: 3px;
-            text-align: center;
-            font-size: 18px;
-            min-height: 20px;
-        }
-        .formula {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #586069;
-            border-top: 1px solid #e1e4e8;
-            padding-top: 15px;
-        }
-        .loading {
-            color: #586069;
-            font-style: italic;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Altitude Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f0f2f5;
+    }
+    h1 {
+      color: #0366d6;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .container {
+      display: flex;
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .box {
+      flex: 1;
+      background: #fff;
+      border-radius: 6px;
+      padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .box h2 {
+      margin-top: 0;
+      color: #0366d6;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #d1d5da;
+      border-radius: 3px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #0366d6;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      margin: 10px 0;
+      display: inline-block;
+    }
+    button:hover {
+      background-color: #024ea2;
+    }
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      background-color: #cce5ff;
+      border-radius: 3px;
+      text-align: center;
+      font-size: 16px;
+      min-height: 40px;
+    }
+    .formula {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #586069;
+      border-top: 1px solid #e1e4e8;
+      padding-top: 15px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
 </head>
 <body>
-    <h1>Altitude Calculator</h1>
-    
-    <div class="calculator">
-        <div class="input-group">
-            <label for="latitude">Latitude</label>
-            <input type="number" id="latitude" value="38.696201759141914" step="0.000001">
-        </div>
-        
-        <div class="input-group">
-            <label for="longitude">Longitude</label>
-            <input type="number" id="longitude" value="-9.363095691262783" step="0.000001">
-        </div>
+  <h1>Altitude Calculator</h1>
 
-        <button id="getLocation">Get Current Location</button>
-        
-        <div class="input-group">
-            <label for="seaLevelPressure">Sea Level Pressure (hPa)</label>
-            <input type="number" id="seaLevelPressure" value="1013.25" step="0.01">
-        </div>
-        
-        <div class="input-group">
-            <label for="currentPressure">Current Pressure (hPa)</label>
-            <input type="number" id="currentPressure" step="0.01">
-        </div>
-        
-        <div class="input-group">
-            <label for="temperature">Temperature (°C, optional)</label>
-            <input type="number" id="temperature" step="0.1" placeholder="15 (default)">
-        </div>
+  <div class="container">
+    <!-- Left: Inputs and buttons -->
+    <div class="box">
+      <h2>Inputs</h2>
+      <div class="input-group">
+        <label for="latitude">Latitude</label>
+        <input type="number" id="latitude" step="0.000001" placeholder="Auto-filled from GPS">
+      </div>
+      <div class="input-group">
+        <label for="longitude">Longitude</label>
+        <input type="number" id="longitude" step="0.000001" placeholder="Auto-filled from GPS">
+      </div>
+      <div class="input-group">
+        <label for="seaLevelPressure">Sea Level Pressure (hPa)</label>
+        <input type="number" id="seaLevelPressure" step="0.01">
+      </div>
+      <div class="input-group">
+        <label for="currentPressure">Current Pressure (hPa)</label>
+        <input type="number" id="currentPressure" step="0.01">
+      </div>
+      <div class="input-group">
+        <label for="temperature">Temperature (°C)</label>
+        <input type="number" id="temperature" step="0.1" placeholder="15 (default)">
+      </div>
 
-        <button id="fetchWeather">Get Current Weather</button>
-        
-        <div id="result" class="result">
-            <span class="loading">Enter pressure values to calculate altitude</span>
-        </div>
+      <button id="getLocation">Get Current Location</button>
+      <button id="fetchWeather">Get Current Weather</button>
     </div>
-    
-    <div class="formula">
-        <p>This calculator uses the barometric formula:</p>
-        <p>Altitude = ( (P₀/P)<sup>1/5.257</sup> - 1 ) × (T + 273.15) / 0.0065</p>
-        <p>Where:<br>
-        P₀ = Sea level pressure (hPa)<br>
-        P = Current pressure (hPa)<br>
-        T = Temperature (°C)</p>
+
+    <!-- Right: Results -->
+    <div class="box">
+      <h2>Results</h2>
+      <div>
+        <h3>Pressure-based Altitude</h3>
+        <div id="resultPressure" class="result">
+          Enter or fetch pressure values to calculate altitude
+        </div>
+      </div>
+      <div>
+        <h3>GPS-based Altitude</h3>
+        <div id="resultGPS" class="result">
+          Press the button to get GPS altitude
+        </div>
+      </div>
     </div>
-    
-    <script>
-        const inputs = document.querySelectorAll('input');
-        const resultElement = document.getElementById('result');
-        const fetchButton = document.getElementById('fetchWeather');
-        const getLocationButton = document.getElementById('getLocation');
+  </div>
 
-        // Calculate altitude whenever an input changes
-        inputs.forEach(input => input.addEventListener('input', calculateAltitude));
+  <div class="formula">
+    <p>This calculator uses the barometric formula:</p>
+    <p>Altitude = ( (P₀/P)<sup>1/5.257</sup> - 1 ) × (T + 273.15) / 0.0065</p>
+    <p>Where:<br>
+      P₀ = Sea level pressure (hPa)<br>
+      P = Current pressure (hPa)<br>
+      T = Temperature (°C)</p>
+  </div>
 
-        // Fetch current weather data
-        fetchButton.addEventListener('click', async () => {
-            const lat = parseFloat(document.getElementById('latitude').value);
-            const lon = parseFloat(document.getElementById('longitude').value);
+  <script>
+    const inputs = document.querySelectorAll('input');
+    const resultPressure = document.getElementById('resultPressure');
+    const resultGPS = document.getElementById('resultGPS');
+    const fetchButton = document.getElementById('fetchWeather');
+    const getLocationButton = document.getElementById('getLocation');
 
-            updateResult("Fetching weather data...");
-            try {
-                const response = await fetch(`https://openweather-backend-992630135983.europe-southwest1.run.app/weather?lat=${lat}&lon=${lon}`);
-                const data = await response.json();
+    // Recalculate altitude on input changes
+    inputs.forEach(input => input.addEventListener('input', calculateAltitude));
 
-                // Update inputs with API values
-                document.getElementById('seaLevelPressure').value = data.main.sea_level;
-                document.getElementById('currentPressure').value = data.main.grnd_level;
-                document.getElementById('temperature').value = data.main.temp;
+    // Fetch weather data from Open-Meteo
+    fetchButton.addEventListener('click', async () => {
+      const lat = parseFloat(document.getElementById('latitude').value);
+      const lon = parseFloat(document.getElementById('longitude').value);
 
-                updateResult("Weather data updated! Calculating altitude...");
-                calculateAltitude();
-            } catch (error) {
-                updateResult("Error fetching weather data.");
-                console.error(error);
-            }
-        });
+      if (isNaN(lat) || isNaN(lon)) {
+        updateResult(resultPressure, "Please get your location first.");
+        return;
+      }
 
-        // Get current location
-        getLocationButton.addEventListener('click', () => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        document.getElementById('latitude').value = position.coords.latitude;
-                        document.getElementById('longitude').value = position.coords.longitude;
-                        updateResult("Location obtained! You can now fetch weather data or calculate altitude.");
-                    },
-                    (error) => {
-                        updateResult("Could not get location. Using default coordinates.");
-                        console.warn(error);
-                    }
-                );
+      updateResult(resultPressure, "Fetching weather data...");
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=pressure_msl,surface_pressure,temperature_2m`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (!data.current) {
+          updateResult(resultPressure, "Weather data unavailable for this location.");
+          return;
+        }
+
+        // Auto-fill values
+        document.getElementById('seaLevelPressure').value = data.current.pressure_msl;
+        document.getElementById('currentPressure').value = data.current.surface_pressure;
+        document.getElementById('temperature').value = data.current.temperature_2m;
+
+        updateResult(resultPressure, "Weather data updated! Calculating altitude...");
+        calculateAltitude();
+      } catch (error) {
+        updateResult(resultPressure, "Error fetching weather data.");
+        console.error(error);
+      }
+    });
+
+    // Get GPS coordinates + altitude
+    getLocationButton.addEventListener('click', () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude, altitude } = position.coords;
+
+            // Auto-fill latitude and longitude
+            document.getElementById('latitude').value = latitude.toFixed(6);
+            document.getElementById('longitude').value = longitude.toFixed(6);
+
+            let message = `Latitude: ${latitude.toFixed(6)}<br>Longitude: ${longitude.toFixed(6)}<br>`;
+            if (altitude !== null) {
+              message += `GPS Altitude: ${altitude.toFixed(2)} meters (${(altitude * 3.28084).toFixed(2)} feet)`;
             } else {
-                updateResult("Geolocation is not supported by this browser.");
+              message += "GPS altitude not available on this device/browser.";
             }
-        });
+            updateResult(resultGPS, message);
+          },
+          (error) => {
+            updateResult(resultGPS, "Could not get location or altitude.");
+            console.warn(error);
+          }
+        );
+      } else {
+        updateResult(resultGPS, "Geolocation is not supported by this browser.");
+      }
+    });
 
-        function calculateAltitude() {
-            const seaLevelPressure = parseFloat(document.getElementById('seaLevelPressure').value);
-            const currentPressure = parseFloat(document.getElementById('currentPressure').value);
-            let temperature = document.getElementById('temperature').value;
+    function calculateAltitude() {
+      const seaLevelPressure = parseFloat(document.getElementById('seaLevelPressure').value);
+      const currentPressure = parseFloat(document.getElementById('currentPressure').value);
+      let temperature = document.getElementById('temperature').value;
 
-            if (isNaN(seaLevelPressure)) {
-                updateResult("Enter sea level pressure");
-                return;
-            }
+      if (isNaN(seaLevelPressure)) {
+        updateResult(resultPressure, "Enter sea level pressure");
+        return;
+      }
+      if (isNaN(currentPressure)) {
+        updateResult(resultPressure, "Enter current pressure");
+        return;
+      }
+      if (currentPressure <= 0) {
+        updateResult(resultPressure, "Current pressure must be positive");
+        return;
+      }
 
-            if (isNaN(currentPressure)) {
-                updateResult("Enter current pressure");
-                return;
-            }
+      temperature = temperature === '' ? 15 : parseFloat(temperature);
 
-            if (currentPressure <= 0) {
-                updateResult("Current pressure must be positive");
-                return;
-            }
+      const altitude = ((Math.pow(seaLevelPressure / currentPressure, 1/5.257) - 1) * (temperature + 273.15)) / 0.0065;
+      updateResult(resultPressure, `Estimated Altitude: ${altitude.toFixed(2)} meters (${(altitude * 3.28084).toFixed(2)} feet)`);
+    }
 
-            temperature = temperature === '' ? 15 : parseFloat(temperature);
-
-            const altitude = ((Math.pow(seaLevelPressure / currentPressure, 1/5.257) - 1) * (temperature + 273.15)) / 0.0065;
-            updateResult(`Estimated Altitude: ${altitude.toFixed(2)} meters (${(altitude * 3.28084).toFixed(2)} feet)`);
-        }
-
-        function updateResult(message) {
-            resultElement.innerHTML = message;
-        }
-    </script>
+    function updateResult(element, message) {
+      element.innerHTML = message;
+    }
+  </script>
 </body>
 </html>
