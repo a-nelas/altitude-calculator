@@ -198,7 +198,7 @@
 
             let message = `Latitude: ${latitude.toFixed(6)}<br>Longitude: ${longitude.toFixed(6)}<br>`;
             if (altitude !== null) {
-              message += `GPS Altitude: ${altitude.toFixed(2)} meters (${(altitude * 3.28084).toFixed(2)} feet)`;
+              message += `GPS Altitude: ${altitude.toFixed(2)} meters above sea level`;
             } else {
               message += "GPS altitude not available on this device/browser.";
             }
@@ -235,7 +235,7 @@
       temperature = temperature === '' ? 15 : parseFloat(temperature);
 
       const altitude = ((Math.pow(seaLevelPressure / currentPressure, 1/5.257) - 1) * (temperature + 273.15)) / 0.0065;
-      updateResult(resultPressure, `Estimated Altitude: ${altitude.toFixed(2)} meters (${(altitude * 3.28084).toFixed(2)} feet)`);
+      updateResult(resultPressure, `Estimated Altitude: ${altitude.toFixed(2)} meters above sea level`);
     }
 
     function updateResult(element, message) {
