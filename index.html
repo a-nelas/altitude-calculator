@@ -86,6 +86,8 @@
             <label for="longitude">Longitude</label>
             <input type="number" id="longitude" value="-9.363095691262783" step="0.000001">
         </div>
+
+        <button id="getLocation">Get Current Location</button>
         
         <div class="input-group">
             <label for="seaLevelPressure">Sea Level Pressure (hPa)</label>
@@ -122,13 +124,12 @@
         const inputs = document.querySelectorAll('input');
         const resultElement = document.getElementById('result');
         const fetchButton = document.getElementById('fetchWeather');
+        const getLocationButton = document.getElementById('getLocation');
 
         // Calculate altitude whenever an input changes
-        inputs.forEach(input => {
-            input.addEventListener('input', calculateAltitude);
-        });
+        inputs.forEach(input => input.addEventListener('input', calculateAltitude));
 
-        // Fetch current weather data on button click
+        // Fetch current weather data
         fetchButton.addEventListener('click', async () => {
             const lat = parseFloat(document.getElementById('latitude').value);
             const lon = parseFloat(document.getElementById('longitude').value);
@@ -148,6 +149,25 @@
             } catch (error) {
                 updateResult("Error fetching weather data.");
                 console.error(error);
+            }
+        });
+
+        // Get current location
+        getLocationButton.addEventListener('click', () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        document.getElementById('latitude').value = position.coords.latitude;
+                        document.getElementById('longitude').value = position.coords.longitude;
+                        updateResult("Location obtained! You can now fetch weather data or calculate altitude.");
+                    },
+                    (error) => {
+                        updateResult("Could not get location. Using default coordinates.");
+                        console.warn(error);
+                    }
+                );
+            } else {
+                updateResult("Geolocation is not supported by this browser.");
             }
         });
 
